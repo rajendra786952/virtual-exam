@@ -189,46 +189,6 @@
                   </div>
                 </div>
               </li>
-
-              <li>
-                <div class="row">
-                  <div class="col-2">
-                    <div class="form-group">
-                      <h6>Subject Code</h6>
-                    </div>
-                  </div>
-                  <div class="col-5">
-                    <div class="form-group w-75">
-                      <input type="text" class="form-control" formControlName="subjectCode">
-                    </div>
-                    <div class="form-group w-75">
-                      <span class="text-danger"
-                        *ngIf="testform1.controls.subjectCode.invalid && (testform1.controls.subjectCode.dirty || testform1.controls.subjectCode.touched)">Subject
-                        code is required</span>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="row">
-                  <div class="col-2">
-                    <div class="form-group">
-                      <h6>Branch</h6>
-                    </div>
-                  </div>
-                  <div class="col-5">
-                    <div class="form-group w-75">
-                      <ng-select [items]="branch" bindLabel="name" bindValue="value" formControlName="branch"
-                        placeholder="Select branch"></ng-select>
-                    </div>
-                    <div class="form-group w-75">
-                      <span class="text-danger"
-                        *ngIf="testform1.controls.branch.invalid && (testform1.controls.branch.dirty || testform1.controls.branch.touched)">Branch
-                        is required</span>
-                    </div>
-                  </div>
-                </div>
-              </li>
               <li>
                 <div class="row">
                   <div class="col-2">
@@ -249,6 +209,48 @@
                   </div>
                 </div>
               </li>
+              <li>
+                <div class="row">
+                  <div class="col-2">
+                    <div class="form-group">
+                      <h6>Branch</h6>
+                    </div>
+                  </div>
+                  <div class="col-5">
+                    <div class="form-group w-75">
+                      <ng-select [items]="branch" bindLabel="branch" bindValue="branch" formControlName="branch"
+                        placeholder="Select branch" (change)="setSubject($event)"></ng-select>
+                    </div>
+                    <div class="form-group w-75">
+                      <span class="text-danger"
+                        *ngIf="testform1.controls.branch.invalid && (testform1.controls.branch.dirty || testform1.controls.branch.touched)">Branch
+                        is required</span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li *ngIf="testform1.controls.branch.value!='' && testform1.controls.branch.value!=null && testform1.controls.branch.value!=undefined">
+                <div class="row">
+                  <div class="col-2">
+                    <div class="form-group">
+                      <h6>Subject Code</h6>
+                    </div>
+                  </div>
+                  <div class="col-5">
+                    <div class="form-group w-75">
+                      <ng-select [items]="subject" bindLabel="name" bindValue="value" formControlName="subjectCode"
+                      placeholder="Select Subject"></ng-select>
+                     
+                    </div>
+                    <div class="form-group w-75">
+                      <span class="text-danger"
+                        *ngIf="testform1.controls.subjectCode.invalid && (testform1.controls.subjectCode.dirty || testform1.controls.subjectCode.touched)">Subject
+                        code is required</span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              
               <li>
                 <div class="row">
                   <div class="col-2">

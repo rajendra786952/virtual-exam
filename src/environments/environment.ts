@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  API_URL:"https://spring-boot-exam-portal.herokuapp.com/"
+  API_URL:"https://app-virtual-classroom.herokuapp.com/"
   //API_URL:"http://localhost:8080/"
 };

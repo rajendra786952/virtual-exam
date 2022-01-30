@@ -1,0 +1,89 @@
+
+<div class="row productbox mt-3 py-3" >
+    <div class="col-6">
+        <div class="content-header mt-0">
+          <h2><i class="ft-chevron-left pr-2 cursor-pointer"  (click)="goback()"></i>{{this.branchData ? 'Edit Branch' : 'New Branch'}} </h2>
+        </div>
+      </div>
+  <div class="col-12" >
+    <div class="mt-3 ml-5">
+        <form [formGroup]="branchForm">  
+                <ul class=" list-unstyled">
+                        <li>
+                            <div class="row">
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label>Branch Name</label>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="form-group w-75">
+                                    <input type="text" class="form-control" formControlName="branch">
+                                </div>
+                                <div class="form-group w-75">
+                                  <span class="text-danger" *ngIf="branchForm.controls.branch.invalid && (branchForm.controls.branch.dirty || branchForm.controls.branch.touched)">Branch name is required</span>
+                                </div>
+                            </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <div class="col-2">
+                                    <div class="form-group">
+                                        <label>Subject</label>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div class="w-75 text-right">
+                                        <button type="button" class="btn btn-outline-primary" (click)="addSubject()">
+                                            Add Subject
+                                    </button>
+                                    </div>
+                                    <div formArrayName="sub">
+                                        <div class="mt-2" *ngFor="let skill of this.branchForm.get('sub')['controls']; let i=index;">
+                                            <div class="w-100" [formGroupName]="i">
+                                                <div class="w-75 d-inline-block">
+                                                    <div class="form-group w-100 ">    
+                                                        <input type="text" class="form-control" formControlName="sub_name">
+                                                    </div>
+                                                </div>
+                                                <div class="w-25 form-group d-inline-block" *ngIf="this.branchForm.get('sub')['controls'].length > 1">
+                                                    <i class="fa fa-trash-o text-danger font-large-1 cp ml-2" (click)="removeSub(i)"></i>
+                                                </div>
+                                            </div>
+                                            
+                                           <div class="form-group w-75" >
+                                                <span class="text-danger" *ngIf="this.branchForm.controls.sub.controls[i].controls.sub_name.invalid && ( this.branchForm.controls.sub.controls[i].controls.sub_name.dirty || this.branchForm.controls.sub.controls[i].controls.sub_name.touched)">subject is required</span>
+                                            </div>                         
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                             </div>
+                        </li>
+                       
+                        <li>
+                            <div class="row">
+                                <div class="col-7">
+                                    <div class="text-center mt-3 ">
+                                        <button type="button" class="btn btn-outline-primary " (click)="submit()">{{this.branchData ? 'Update' : 'Save'}}</button>
+                                        <button type="button" class="btn btn-outline-primary ml-5" (click)="goback()">Cancel</button>
+                                       </div>  
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                
+            
+           
+        </form>
+       
+        
+       </div>
+     </div>
+     
+  
+
+    </div>
+      
+  

@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StudentService } from 'app/shared/services/student.service';
+import { ToastrService } from 'ngx-toastr';
 import swal from 'sweetalert2';
 declare var $;
 @Component({
@@ -12,7 +13,8 @@ declare var $;
 export class TestComponent implements OnInit {
   id = sessionStorage.getItem('roll');
   upcoming_test = [];
-  constructor(private student: StudentService, private router: Router, private cdr:ChangeDetectorRef) { }
+  constructor(private student: StudentService, private router: Router, 
+    private cdr:ChangeDetectorRef,private toaster:ToastrService) { }
 
   ngOnInit(): void {
     this.getStudenttest();
@@ -21,16 +23,26 @@ export class TestComponent implements OnInit {
   getStudenttest() {
     this.student.getStudentTest(this.id).subscribe((res: any) => {
       if (res) {
-        res.map((x)=>{
-          if(x.subjective){
-            x.subjective="Theory";
-          }
-          else{
-            x.subjective="MCQ"
-          }
-        })
-        this.upcoming_test = res;
-        this.cdr.detectChanges();
+        console.log(res);
+        if(typeof(res.response)=='string'){
+          this.toaster.success('',res.response, {
+            positionClass: 'toast-bottom-center', closeButton: true, "easeTime":500
+          });
+          this.cdr.detectChanges();
+        }
+        else{
+          res.response.map((x)=>{
+            if(x.subjective){
+              x.subjective="Theory";
+            }
+            else{
+              x.subjective="MCQ"
+            }
+          })
+          this.upcoming_test = res.response;
+          this.cdr.detectChanges();
+        }
+        
       }
     },
       error => {
@@ -61,32 +73,26 @@ export class TestComponent implements OnInit {
         console.log(v+" "+v1);
         if (v1 != '' && v1 != null && v1 != undefined && v != '' && v != null && v != undefined) {
           this.student.Testauth({ testId: v, password: v1 }).subscribe((res: any) => {
-            if (res[0] == true) {
+            console.log(res);
+            if(res.status=='success'){
               sessionStorage.setItem('testId', i);
               console.log(j);
               sessionStorage.setItem('time',j);
 
-                  if (res[1] == false) {
+                  if (res.response == false) {
                     this.router.navigate(['/mcq']);
                   }
                   else {
                     this.router.navigate(['/subjective']);
                   }
             }
-            else {
-              swal.fire({
-                title: "Invalid Test Id or Password",
-                //text: "Something went wrong",
-                icon: "error",
-                customClass: {
-                  confirmButton: 'btn btn-primary'
-                },
-                buttonsStyling: false,
-              });
-            }
+          
           },
             error => {
               console.log(error);
+              this.toaster.error('',error.error.response, {
+                positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
+              });
             })
 
 

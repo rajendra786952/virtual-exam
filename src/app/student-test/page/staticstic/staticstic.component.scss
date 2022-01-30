@@ -1,3 +1,8 @@
 #chart{
     max-width:100%;
 }
+::ng-deep{
+    .apexcharts-menu-icon{
+       display: none !important;
+    }
+}

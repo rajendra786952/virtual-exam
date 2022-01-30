@@ -4,6 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { FacultyService } from 'app/shared/services/faculty.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-past-test',
@@ -15,7 +16,8 @@ export class PastTestComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  constructor(private route:Router,private faculty:FacultyService,private cdRef:ChangeDetectorRef) { }
+  constructor(private route:Router,private faculty:FacultyService,
+    private cdRef:ChangeDetectorRef,private toaster:ToastrService) { }
 
   ngOnInit(): void {
      this.getFacultyPastTest();
@@ -28,19 +30,28 @@ export class PastTestComponent implements OnInit {
     this.faculty.getFacultyPastTest().subscribe((res:any)=>{
       console.log(res);
      if(res){
-      res.map((x)=>{
-        var r=x.resultOn.split(" ");
-        x.date=r[0];
-        x.time=r[1];
-        if(x.subjective){
-          x.subjective="Theory";
-        }
-        else{
-          x.subjective="MCQ"
-        }
-      })
-       this.dataSource=res;
-       this.cdRef.detectChanges();
+      if(typeof(res.response)=='string'){
+        this.toaster.success('',res.response, {
+          positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500 ,timeOut:2000
+        });
+        this.cdRef.detectChanges();
+      }
+      else{
+        res.response.map((x)=>{
+          var r=x.resultOn.split(" ");
+          x.date=r[0];
+          x.time=r[1];
+          if(x.subjective){
+            x.subjective="Theory";
+          }
+          else{
+            x.subjective="MCQ"
+          }
+        })
+         this.dataSource=res.response;
+         this.cdRef.detectChanges();
+      }
+   
      }
     },
     error =>{

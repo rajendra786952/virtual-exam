@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { BranchService } from 'app/shared/services/branch.service';
 import { StudentService } from 'app/shared/services/student.service';
 import { ToastrService } from 'ngx-toastr';
 import * as XLSX from 'xlsx';
@@ -23,10 +24,12 @@ export class StudentaddComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   @ViewChild(MatSort) sort: MatSort;
   constructor(private location: Location, private fb: FormBuilder,
-    private cdRef: ChangeDetectorRef, private student: StudentService, public toastr: ToastrService) { }
+    private cdRef: ChangeDetectorRef, private student: StudentService, 
+    public toastr: ToastrService,private branchService:BranchService) { }
 
   ngOnInit(): void {
     this.initform();
+    this.getBranch();
   }
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -94,7 +97,7 @@ export class StudentaddComponent implements OnInit {
     this.studentForm.get('section').setValue(this.studentForm.get('section').value.toUpperCase());
     this.student.addStudent(this.studentForm.value).subscribe((res: any) => {
       if (res) {
-        this.toastr.success('', res[0], {
+        this.toastr.success('', res.response, {
           positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
         });
         this.studentForm.reset();
@@ -103,25 +106,37 @@ export class StudentaddComponent implements OnInit {
       }
     },
       error => {
-        this.toastr.show('', error.error[0], {
+        this.toastr.show('', error.error.response, {
           positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
         });
         console.log(error);
       });
 
   }
+  getBranch() {
+    this.branchService.getAllBranch().subscribe((res: any) => {
+      if (res) {
+        console.log(res);
+        this.branch= res.response;
+        this.cdRef.detectChanges();
+      }
+    },
+      error => {
+        console.log(error);
+      })
+  }
 
   submitcsv() {
     this.student.addStudentCsv(this.csvobject).subscribe((res: any) => {
       if (res) {
         console.log(res);
-        this.toastr.success('', res[0], {
+        this.toastr.success('', res.response, {
           positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
         });
         this.goback();
       }
     }, error => {
-      this.toastr.show('', error.error[0], {
+      this.toastr.show('', error.error.response, {
         positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
       });
       console.log(error);

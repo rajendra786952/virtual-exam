@@ -4,7 +4,7 @@
 
   To learn more about this file see: https://angular.io/config/solution-tsconfig.
 */
-{
+/*{
   "files": [],
   "references": [
     {
@@ -14,4 +14,38 @@
       "path": "./src/tsconfig.spec.json"
     }
   ]
+}
+*/
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "paths": {
+      "ng-open-cv": [
+        "dist/ng-open-cv",
+        "dist/ng-open-cv",
+        "dist/ng-open-cv"
+      ],
+      "ng-open-cv/*": [
+        "dist/ng-open-cv/*",
+        "dist/ng-open-cv/*",
+        "dist/ng-open-cv/*"
+      ]
+    }
+  }
 }

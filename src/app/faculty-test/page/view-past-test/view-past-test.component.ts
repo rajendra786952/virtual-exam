@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { StudentService } from 'app/shared/services/student.service';
 declare var $;
@@ -13,10 +13,12 @@ export class ViewPastTestComponent implements OnInit,OnDestroy {
   //show="MCQ";
   testid;
   roll;
+  loader=false;
   //question:any;
 question:any;
   
-  constructor(private location:Location,private activeRoute:ActivatedRoute,private student:StudentService) { }
+  constructor(private location:Location,private activeRoute:ActivatedRoute,
+    private student:StudentService,private cdr:ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.testid=this.activeRoute.snapshot.params['id'];
@@ -36,19 +38,22 @@ question:any;
     this.student.getPastTestViewbyroll(v,v1).subscribe((res:any)=>{
       if(res){
         console.log(res);
-        this.question=res;
+        this.question=res.response;
+        this.loader=true;  
+        this.cdr.detectChanges();
       }
     },
     error =>{
+      this.loader=false; 
       console.log(error);
     });
   }
-   check(i,j,k){
-     if(this.question[i].correctOption==j){
+  check(i,j,k){
+    if(this.question.ansList[i].answer==j-1){
 
-     }
-     else{
-       $('#'+k+i).prop('checked', false);
-     }
-   }
+    }
+    else{
+      $('#'+k+j).prop('checked', false);
+    }
+  }
 }

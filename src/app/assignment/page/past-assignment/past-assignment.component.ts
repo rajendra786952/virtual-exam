@@ -1,0 +1,51 @@
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { FacultyService } from '../../../shared/services/faculty.service';
+
+@Component({
+  selector: 'app-past-assignment',
+  templateUrl: './past-assignment.component.html',
+  styleUrls: ['./past-assignment.component.scss']
+})
+export class PastAssignmentComponent implements OnInit {
+
+  displayedColumns: string[] = ['s_no','title','assignTime','dueTime','section','marks','attachment']
+  dataSource = new MatTableDataSource<any>();
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  constructor(private route: Router,private cdRef: ChangeDetectorRef,
+    private toster:ToastrService,private facultyService:FacultyService) { }
+
+  ngOnInit(): void {
+    this.getAssignment();
+  }
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+  getAssignment(){
+    this.facultyService.getPastAssignment().subscribe((res:any)=>{
+      if(res){
+        console.log(res);
+        if(typeof(res.response)=='string'){
+          this.toster.success('',res.response, {
+            positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500,timeOut:2000
+          });
+          this.cdRef.detectChanges();
+        }
+        else{
+          this.dataSource=res.response;
+          this.cdRef.detectChanges();
+        }
+      }
+    },
+    error =>{
+      console.log(error);
+    }) 
+  }
+
+}

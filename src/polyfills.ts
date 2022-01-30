@@ -53,7 +53,7 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 
 /* ngx-charts required polyfill ie11 */
 import 'core-js/es/array';
-
+declare var cv: any;
 /**
  * Date, currency, decimal and percent pipes.
  * Needed for: All but Chrome, Firefox, Edge, IE11 and Safari 10

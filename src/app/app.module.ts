@@ -43,6 +43,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { SpeedTestModule } from 'ng-speed-test';
 import { PreviewComponent } from './preview/preview.component';
+import { NgOpenCVModule } from 'ng-open-cv';
+import { OpenCVOptions } from '../../projects/ng-open-cv/src/public_api';
 
 
 
@@ -51,6 +53,11 @@ import { PreviewComponent } from './preview/preview.component';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
   wheelPropagation: false
+};
+const openCVConfig: OpenCVOptions = {
+  scriptUrl: `assets/opencv/opencv.js`,
+  wasmBinaryFile: 'wasm/opencv_js.wasm',
+  usingWasm: true
 };
 
 export function createTranslateLoader(http: HttpClient) {
@@ -86,7 +93,8 @@ export function createTranslateLoader(http: HttpClient) {
     MatButtonModule,
     CountdownModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }) ,
-    SpeedTestModule
+    SpeedTestModule,
+    NgOpenCVModule.forRoot(openCVConfig),
   ],
   providers: [
     AuthService,

@@ -56,6 +56,14 @@ const route:Routes=[
     path: 'search/:id',
     component: FacultySearchResultComponent,
    },
+   {
+    path:'assignment',
+    loadChildren:()=>import('../assignment/assignment.module').then(m=>m.AssignmentModule)
+  },
+  {
+    path:'post',
+    loadChildren:()=>import('../post/post.module').then(m=>m.PostModule)
+  }
 ]
 
 @NgModule({

@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MatStepper } from '@angular/material/stepper';
 import * as XLSX from 'xlsx';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { BranchService } from 'app/shared/services/branch.service';
 
 @Component({
   selector: 'app-new-test',
@@ -19,7 +20,8 @@ export class NewTestComponent implements OnInit {
   subjective = [{ name: 'MCQ', value: 'false' }, { name: 'Theory', value: 'true' }];
   duration = [{ name: '30 Minute', value: '30' }, { name: '1:00 hours', value: '60' }, { name: '1:30 hours', value: '90' }, { name: '2:00 hours', value: '120' }, { name: '2:30 hours', value: '150' },
   { name: '3:00 hours', value: '180' }, { name: '3:30 hours', value: '210' }];
-  branch = [{ name: 'Information Technology', value: 'IT' }, { name: 'Mechanical Engineering', value: 'ME' }, { name: 'Computer Science', value: 'CSE' }];
+  branch = [];
+  subject=[];
   sem = [{ name: 'First Semester', value: '1' }, { name: 'Second Semester', value: '2' }, { name: 'Third Semester', value: '3' }, { name: 'Fourth Semester', value: '4' }, { name: 'Fifth Semester', value: '5' },
   { name: 'Sixth Semester', value: '6' }, { name: 'Seventh Semester', value: '7' }, { name: 'Eighth Semester', value: '8' }]
   minDate = new Date();
@@ -36,7 +38,8 @@ export class NewTestComponent implements OnInit {
   csvobject: any = [];
   buttontype = true;
   constructor(private _formBuilder: FormBuilder, private datePipe: DatePipe, private faculty: FacultyService,
-    private location: Location, private toastr: ToastrService, private cdRef: ChangeDetectorRef, private spinner: NgxSpinnerService) { }
+    private location: Location, private toastr: ToastrService,
+     private cdRef: ChangeDetectorRef, private spinner: NgxSpinnerService,private branchService: BranchService) { }
 
   ngOnInit() {
 
@@ -60,6 +63,7 @@ export class NewTestComponent implements OnInit {
     this.questionForm = this._formBuilder.group({
       question: this._formBuilder.array([])
     });
+    this.getBranch();
   }
 
   goback() {
@@ -271,7 +275,7 @@ export class NewTestComponent implements OnInit {
         if (this.testform1.get('subjective').value == 'true' && res != 0) {
           var ar = this.questionForm.value.question;
           ar.map((x) => {
-            x.testId = res.TestId;
+            x.testId = res.response.TestId;
           })
           console.log(ar);
           this.faculty.subjective(ar).subscribe((res: any) => {
@@ -279,7 +283,7 @@ export class NewTestComponent implements OnInit {
               this.spinner.hide();
               this.loader4=false;
               console.log(res);
-              this.toastr.success('', res.Message, {
+              this.toastr.success('', res.response, {
                 positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
               });
               this.testform1.reset();
@@ -300,9 +304,14 @@ export class NewTestComponent implements OnInit {
         else if (this.testform1.get('subjective').value == 'false' && res != 0) {
           var ar = this.questionForm.value.question;
           ar.map((x) => {
-            x.testId = res.TestId;
+            x.testId = res.response.TestId;
             x.question = x.text;
-            if (x.option.length == 4) {
+            let ar=[];
+            x.option.map((option:any)=>{
+             ar.push(option.optionq);
+            });
+            x.options=ar;
+        /*    if (x.option.length == 4) {
               x.option1 = x.option[0].optionq;
               x.option2 = x.option[1].optionq;
               x.option3 = x.option[2].optionq;
@@ -320,6 +329,7 @@ export class NewTestComponent implements OnInit {
               x.option3 = null;
               x.option4 = null;
             }
+            */
             delete x.option;
             delete x.text;
             delete x.mark;
@@ -330,7 +340,7 @@ export class NewTestComponent implements OnInit {
               this.spinner.hide();
               console.log(res);
               this.loader4=false;
-              this.toastr.success('', res.Message, {
+              this.toastr.success('', res.response, {
                 positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
               });
               this.testform1.reset();
@@ -425,6 +435,28 @@ export class NewTestComponent implements OnInit {
       ar.push(this._formBuilder.group({ optionq: [i[j], Validators.required] }));
     }
     return ar;
+  }
+
+  getBranch() {
+    this.branchService.getAllBranch().subscribe((res: any) => {
+      if (res) {
+        console.log(res);
+        this.branch= res.response;
+        this.cdRef.detectChanges();
+      }
+    },
+      error => {
+        console.log(error);
+      })
+  }
+  
+  setSubject(event:any){
+   console.log(event);
+   let subjectList=[];
+   event.subjects.map((x:any)=>{
+     subjectList.push({name:x,value:x});
+   })
+   this.subject=subjectList;
   }
 
 }

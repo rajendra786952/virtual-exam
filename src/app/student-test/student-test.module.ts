@@ -17,6 +17,13 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { PostComponent } from './page/post/post.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { AssignmentComponent } from './page/assignment/assignment.component';
+import { OngoingComponent } from './page/assignment/page/ongoing/ongoing.component';
+import { MissedComponent } from './page/assignment/page/missed/missed.component';
+import { CompleteComponent } from './page/assignment/page/complete/complete.component';
 const route:Routes=[
   {
     path:'test',
@@ -33,11 +40,29 @@ const route:Routes=[
   {
     path:'stats',
     component:StaticsticComponent
+  },
+  {
+    path:'post',
+    component:PostComponent
+  },
+  {
+    path:'assignment/ongoing',
+    component:OngoingComponent,
+  },
+  {
+    path:'assignment/missed',
+    component:MissedComponent,
+  },
+  {
+    path:'assignment/complete',
+    component:CompleteComponent,
   }
 ]
 
 @NgModule({
-  declarations: [TestComponent, PastTestComponent, ViewPastTestComponent,StaticsticComponent],
+  declarations: [TestComponent, PastTestComponent, ViewPastTestComponent,StaticsticComponent, PostComponent,
+     AssignmentComponent,OngoingComponent,MissedComponent,CompleteComponent
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(route),
@@ -54,6 +79,9 @@ const route:Routes=[
     NativeDateModule,
     MatDatepickerModule,
     NgxSpinnerModule,
+    MatCardModule,
+    MatDividerModule,
+    MatButtonModule
   ],
   providers: [DatePipe]
 })

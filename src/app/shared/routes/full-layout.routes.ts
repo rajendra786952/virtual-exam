@@ -15,6 +15,10 @@ export const Full_ROUTES: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path:'branch',
+    loadChildren:()=>import('../../branch/branch.module').then(m=>m.BranchModule)
+  },
+  {
    path:'exam-portal/student',
    loadChildren:()=>import('../../student-test/student-test.module').then(m=>m.StudentTestModule),
    canActivate: [StudentGuard]

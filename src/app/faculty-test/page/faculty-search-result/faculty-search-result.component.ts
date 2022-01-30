@@ -42,8 +42,8 @@ export class FacultySearchResultComponent implements OnInit {
     this.student.getStudentbysearch(v).subscribe((res: any) => {
       console.log(res);
       this.status = "show";
-      if (res.length > 0) {
-        res.map((x) => {
+      if (res.response.length > 0) {
+        res.response.map((x) => {
           var r = x.resultOn.split(" ");
           x.date = r[0];
           x.time = r[1];
@@ -54,11 +54,11 @@ export class FacultySearchResultComponent implements OnInit {
             x.subjective = "MCQ"
           }
         })
-        this.dataSource = res;
+        this.dataSource = res.response;
         this.cdRef.detectChanges();
       }
       else {
-        this.dataSource = res;
+        this.dataSource = res.response;
         this.cdRef.detectChanges();
       }
 

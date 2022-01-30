@@ -1,0 +1,75 @@
+
+<div class="row productbox py-3 mt-3" >
+    <div class="col-6">
+        <div class="content-header mt-0">
+          <h2>Past Assignment</h2>
+        </div>
+      </div>
+ 
+    <div class="col-12">
+    <div class="mat-elevation-z8 mt-2" >
+        <table mat-table [dataSource]="dataSource" class="w-100" matSort>
+          <!-- Position Column -->
+          <ng-container matColumnDef="s_no">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> S. No.</th>
+            <td mat-cell *matCellDef="let element;let i=index;"> 
+               {{i+1}}
+               </td>
+          </ng-container>
+          <!-- Name Column -->
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+            <td mat-cell *matCellDef="let element">{{element.title}}</td>
+          </ng-container>
+          <ng-container matColumnDef="subjectCode">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Subject Code</th>
+            <td mat-cell *matCellDef="let element">{{element.subjectCode}}</td>
+          </ng-container>
+          <!-- Weight Column -->
+          <ng-container matColumnDef="assignTime">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Assign Time</th>
+            <td mat-cell *matCellDef="let element">{{element.scheduleOn}}</td>
+          </ng-container>
+         
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="dueTime">
+            <th mat-header-cell *matHeaderCellDef>Due Time</th>
+            <td mat-cell *matCellDef="let element">{{element.dueOn}}
+              
+           <!--- <i class="fa fa-trash-o text-danger font-large-1 cp" (click)="delete(element.email)"></i> --></td>
+          </ng-container>
+          <ng-container matColumnDef="lateSubmission">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Time Status</th>
+            <td mat-cell *matCellDef="let element"> 
+              <span *ngIf="element.lateSubmission">
+                Submitted Late
+              </span>
+              <span *ngIf="!element.lateSubmission">
+                Submitted On time
+            </span></td>
+          </ng-container>
+          <ng-container matColumnDef="maxMarks">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Marks</th>
+            <td mat-cell *matCellDef="let element">{{element.maxMarks}}</td>
+          </ng-container>
+          <ng-container matColumnDef="marks">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Marks</th>
+            <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.score == -1" class="text-danger">Unchecked</span>
+                <span *ngIf="element.score != -1">{{element.score}}</span>
+                
+            </td>
+          </ng-container>
+         
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      
+     <!---   <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+      </div>
+    
+  </div>
+
+
+</div>
+

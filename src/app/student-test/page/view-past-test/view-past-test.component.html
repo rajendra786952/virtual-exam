@@ -82,7 +82,18 @@
               </div>
               <div class="my-3 mx-2 pl-4 pr-5">
               <ul class="list-unstyled">
-                  <li class="my-1">
+                <li class="my-1" *ngFor="let option of i.options;let index=index;">
+               
+                  <span style="position: absolute;left:10px;" *ngIf="i.correctOption==index+1"><mat-icon class="text-success">check_circle</mat-icon></span>
+                        <span style="position: absolute;left:10px;" *ngIf="i.answer==index+1 && i.correctOption!=i.answer"><mat-icon class="text-danger">highlight_off</mat-icon></span>
+                     
+                      <div class="radio">
+                      <input type="radio" class="form-check-input" name="radioValue{{i.questionId}}"  value="{{index+1}}" id="{{option+(index+1)}}"  [checked]="i.answer==(index+1)" (click)="check(j,index+1,option)">
+                      <label  for="{{option+(index+1)}}">{{option}}</label >
+                          
+                  </div>
+                </li>
+               <!--   <li class="my-1">
                     <span style="position: absolute;left:10px;" *ngIf="i.correctOption=='1'"><mat-icon class="text-success">check_circle</mat-icon></span>
                           <span style="position: absolute;left:10px;" *ngIf="i.answer=='1' && i.correctOption!=i.answer"><mat-icon class="text-danger">highlight_off</mat-icon></span>
                     <div class="radio">
@@ -114,6 +125,7 @@
                         <label for="{{i.option4+j}}">{{i.option4}}</label>
                       </div>
                   </li>
+                -->
               </ul>
               </div>
             </div>

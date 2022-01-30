@@ -33,7 +33,7 @@ export class StudentlistComponent implements OnInit {
     this.student.getStudentList().subscribe((res:any)=>{
       console.log(res);
      if(res){
-       this.dataSource=res;
+       this.dataSource=res.response;
        this.cdRef.detectChanges();
      }
     },
@@ -61,9 +61,17 @@ export class StudentlistComponent implements OnInit {
       this.student.deletestudent(i).subscribe((res:any)=>{
           if(res){
             this.getStudentList();
-            this.toastr.success('','Deleted Successfully', {
-              positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
-            });
+            if(res.response=='Access denied'){
+              this.toastr.error('',res.response, {
+                positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
+              });
+            }
+            else{
+              this.toastr.success('',res.response, {
+                positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
+              });
+            }
+            
           }
       },
       error =>{

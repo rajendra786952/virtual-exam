@@ -15,49 +15,8 @@ export class ViewPastTestComponent implements OnInit,OnDestroy {
   testid;
   loader=false;
   //question:any;
-question:any;/*={
-  "title": "test501",
-  "facultyName": "VR Raghuveer",
-  "subjectCode": "CS-602",
-  "scheduledOn": "2021-05-31 03:00:00",
-  "duration": 90,
-  "totalQuestions": 2,
-  "maxMarks": 10,
-  "negativeMarks": -1,
-  "totalMarks": 0,
-  "ansData": [
-    {
-      "questionId": "1010-1",
-      "answer": "3",
-      "correctOption": "1",
-      "question": "String in Java is a?",
-      "option1": "class",
-      "option2": "object",
-      "option3": "variable",
-      "option4": "character array"
-  },
-  {
-      "questionId": "1010-2",
-      "answer": "2",
-      "correctOption": "2",
-      "question": "In python order to store values in terms of key and value we use what core data type.",
-      "option1": "dictionary",
-      "option2": "tuple",
-      "option3": null,
-      "option4": null
-  },
-  {
-      "questionId": "1010-3",
-      "answer": "4",
-      "correctOption": "2",
-      "question": "Which of these keywords is used to refer to member of base class from a subclass in java?",
-      "option1": "upper",
-      "option2": "super",
-      "option3": "this",
-      "option4": "yes"
-  }
-  ]
-}*/
+question:any;
+  
   constructor(private location:Location,private activeRoute:ActivatedRoute,private student:StudentService,
     private spinner: NgxSpinnerService,private cdr:ChangeDetectorRef) { }
 
@@ -86,7 +45,7 @@ question:any;/*={
     this.student.getPastTestView(v).subscribe((res:any)=>{
       if(res){
         console.log(res);
-        this.question=res;
+        this.question=res.response;
         setTimeout(()=>{
           this.spinner.hide();
           this.loader=true;
@@ -101,11 +60,11 @@ question:any;/*={
   }
 
    check(i,j,k){
-     if(this.question[i].correctOption==j){
+    if(this.question[i].correctOption==j){
 
-     }
-     else{
-       $('#'+k+i).prop('checked', false);
-     }
-   }
+    }
+    else{
+      $('#'+k+i).prop('checked', false);
+    }
+  }
 }

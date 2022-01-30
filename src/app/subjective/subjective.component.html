@@ -1,4 +1,25 @@
-<div  >
+<div class="mt-2 row mx-0 d-flex justify-content-center align-items-center h-100" *ngIf="faceContainerStatus">
+  <div class="col-6">
+    <div>
+     <video
+     [class.d-none]="faceStatus"
+     #video
+     id="video"
+     autoplay
+     style="width:100%;"
+   ></video>
+   <canvas #canvasInput id="canvasInput" [width]="640"
+   [height]="480" [class.d-none]="!faceStatus"></canvas>
+    </div>
+    <div class="text-center mt-2">
+      <h3 [class.d-none]="faceStatus">Detecting Face ...</h3>
+      <h3 [class.d-none]="!faceStatus">Face Detected</h3>
+    </div>
+  </div>
+ </div>
+ 
+
+<div  *ngIf="!faceContainerStatus">
     <div class="row mx-0 d-flex justify-content-between p-2" style="background-color: #ECF0F1;">
       <div></div>
   

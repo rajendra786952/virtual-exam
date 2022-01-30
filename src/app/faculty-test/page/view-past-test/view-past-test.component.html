@@ -1,4 +1,4 @@
-<div class="row productbox py-3 mt-3" >
+<div class="row productbox py-3 mt-3" *ngIf="loader">
     <div class="col-12">
         <div class="content-header mt-0">
           <h2><i class="ft-chevron-left pr-2 cursor-pointer"  (click)="goback()"></i>{{question.title}}</h2>
@@ -80,38 +80,17 @@
               </div>
               <div class="my-3 mx-2 pl-4 pr-5">
               <ul class="list-unstyled">
-                  <li class="my-1">
-                    <span style="position: absolute;left:10px;" *ngIf="i.correctOption=='1'"><mat-icon class="text-success">check_circle</mat-icon></span>
-                          <span style="position: absolute;left:10px;" *ngIf="i.answer=='1' && i.correctOption!=i.answer"><mat-icon class="text-danger">highlight_off</mat-icon></span>
-                    <div class="radio">
-                        <input type="radio" class="form-check-input"  value="{{1}}" id="{{i.option1+j}}"  [checked]="i.answer=='1'"  (click)="check(j,'1',i.option1)">
-                        <label  for="{{i.option1+j}}">{{i.option1}}</label >
-                    </div>
-                  </li>
-                  <li class="my-1">
-                    <span style="position: absolute;left:10px;" *ngIf="i.correctOption=='2'"><mat-icon class="text-success">check_circle</mat-icon></span>
-                            <span style="position: absolute;left:10px;" *ngIf="i.answer=='2' && i.correctOption!=i.answer"><mat-icon class="text-danger">highlight_off</mat-icon></span>
+                <li class="my-1" *ngFor="let option of i.options;let index=index;">
+               
+                  <span style="position: absolute;left:10px;" *ngIf="i.correctOption==index+1"><mat-icon class="text-success">check_circle</mat-icon></span>
+                        <span style="position: absolute;left:10px;" *ngIf="i.answer==index+1 && i.correctOption!=i.answer"><mat-icon class="text-danger">highlight_off</mat-icon></span>
+                     
                       <div class="radio">
-                        <input type="radio" class="form-check-input"  value="{{2}}" id="{{i.option2+j}}"  [checked]="i.answer=='2'" (click)="check(j,'2',i.option2)">
-                        <label for="{{i.option2+j}}">{{i.option2}}</label>
-                    </div>
-                  </li>
-                  <li class="my-1" *ngIf="i.option3!=null && i.option3!='' && i.option3!=undefined">
-                    <span style="position: absolute;left:10px;" *ngIf="i.correctOption=='3'"><mat-icon class="text-success">check_circle</mat-icon></span>
-                            <span style="position: absolute;left:10px;" *ngIf="i.answer=='3' && i.correctOption!=i.answer"><mat-icon class="text-danger">highlight_off</mat-icon></span>
-                    <div class="radio">
-                          <input type="radio" class="form-check-input"  value="{{3}}" id="{{i.option3+j}}"  [checked]="i.answer=='3'" (click)="check(j,'3',i.option3)">
-                          <label for="{{i.option3+j}}">{{i.option3}}</label>
-                      </div>
-                  </li>
-                  <li class="my-1"  *ngIf="i.option4!=null && i.option4!='' && i.option4!=undefined">
-                    <div class="radio">
-                      <span style="position: absolute;left:10px;" *ngIf="i.correctOption=='4'"><mat-icon class="text-success">check_circle</mat-icon></span>
-                            <span style="position: absolute;left:10px;" *ngIf="i.answer=='4' && i.correctOption!=i.answer"><mat-icon class="text-danger">highlight_off</mat-icon></span>
-                        <input type="radio"  value="{{4}}" id="{{i.option4+j}}"  [checked]="i.answer=='4'" (click)="check(j,'4',i.option4)">
-                        <label for="{{i.option4+j}}">{{i.option4}}</label>
-                      </div>
-                  </li>
+                      <input type="radio" class="form-check-input" name="radioValue{{i.questionId}}"  value="{{index+1}}" id="{{option+(index+1)}}"  [checked]="i.answer==(index+1)" (click)="check(j,index+1,option)">
+                      <label  for="{{option+(index+1)}}">{{option}}</label >
+                          
+                  </div>
+                </li>
               </ul>
               </div>
             </div>

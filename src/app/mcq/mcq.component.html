@@ -1,7 +1,31 @@
 
-<div>
+<div class="mt-2 row mx-0 d-flex justify-content-center align-items-center h-100" *ngIf="faceContainerStatus">
+ <div class="col-6">
+   <div>
+    <video
+    [class.d-none]="faceStatus"
+    #video
+    id="video"
+    autoplay
+    style="width:100%;"
+  ></video>
+  <canvas #canvasInput id="canvasInput" [width]="640"
+  [height]="480" [class.d-none]="!faceStatus"></canvas>
+   </div>
+   <div class="text-center mt-2">
+     <h3 [class.d-none]="faceStatus">Detecting Face ...</h3>
+     <h3 [class.d-none]="!faceStatus">Face Detected</h3>
+   </div>
+ </div>
+</div>
+
+  
+
+<div *ngIf="!faceContainerStatus">
   <div class="row mx-0 d-flex justify-content-between p-2" style="background-color: #ECF0F1;">
-    <div></div>
+    <div>
+      
+    </div>
     <div>
       <button class="btn btn-primary">
         <countdown #cd  (event)="handleEvent($event)"></countdown>  
@@ -48,30 +72,12 @@
             </div>
             <div class="my-3 mx-2 pl-4 pr-5">
             <ul class="list-unstyled">
-                <li class="my-1">
+             
+              <li class="my-1" *ngFor="let option of i.options;let index=index;">
                   <div class="radio">
-                      <input type="radio" class="{{'form-check-input'+j}}" name="basic-radio-{{i.option1+j}}" value="{{1}}" id="{{i.option1+j}}"  (change)="setAnswer($event,j)">
-                      <label for="{{i.option1+j}}">{{i.option1}}</label>
+                      <input type="radio" class="{{'form-check-input'+j}}" name="basic-radio-{{j}}" value="{{index+1}}" id="{{option+j+index}}"  (change)="setAnswer($event,j)">
+                      <label for="{{option+j+index}}">{{option}}</label>
                   </div>
-                </li>
-                <li class="my-1">
-                    <div class="radio">
-                      <input type="radio" class="{{'form-check-input'+j}}" name="basic-radio-{{i.option1+j}}" value="{{2}}" id="{{i.option2+j}}" (change)="setAnswer($event,j)">
-                      <label for="{{i.option2+j}}">{{i.option2}}</label>
-                  </div>
-                </li>
-                <li class="my-1" *ngIf="i.option3!=null && i.option3!='' && i.option3!=undefined">
-                  <div class="radio">
-                        <input type="radio" class="{{'form-check-input'+j}}" name="basic-radio-{{i.option1+j}}" value="{{3}}" id="{{i.option3+j}}" (change)="setAnswer($event,j)">
-                        <label for="{{i.option3+j}}">{{i.option3}}</label>
-                    </div>
-                </li>
-                <li class="my-1"  *ngIf="i.option4!=null && i.option4!='' && i.option4!=undefined">
-                  <div class="radio">
-                      <input type="radio" class="{{'form-check-input'+j}}" name="basic-radio-{{i.option1+j}}" value="{{4}}" id="{{i.option4+j}}" (change)="setAnswer($event,j)">
-                      <label for="{{i.option4+j}}">{{i.option4}}</label>
-                    </div>
-                  
                 </li>
             </ul>
             </div>
@@ -123,3 +129,5 @@
 
   </div>
   </div>
+
+

@@ -81,7 +81,7 @@ export class FacultyaddComponent implements OnInit {
     }
     this.faculty.addFaculty(this.facultyForm.value).subscribe((res: any) => {
       if (res) {
-        this.toastr.success('', res[0], {
+        this.toastr.success('', res.response, {
           positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
         });
         this.facultyForm.reset();
@@ -90,7 +90,7 @@ export class FacultyaddComponent implements OnInit {
       }
     },
       error => {
-        this.toastr.show('', error.error[0], {
+        this.toastr.error('', error.error.response, {
           positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
         });
         console.log(error);
@@ -101,13 +101,13 @@ export class FacultyaddComponent implements OnInit {
     this.faculty.addFacultyCsv(this.rowObject).subscribe((res: any) => {
       if (res) {
         console.log(res);
-        this.toastr.success('', res[0], {
+        this.toastr.success('', res.response, {
           positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
         });
         this.goback();
       }
     }, error => {
-      this.toastr.show('', error.error[0], {
+      this.toastr.show('', error.error.response, {
         positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
       });
       console.log(error);

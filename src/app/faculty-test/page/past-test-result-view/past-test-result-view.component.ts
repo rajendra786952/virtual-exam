@@ -1,9 +1,9 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FacultyService } from 'app/shared/services/faculty.service';
 import { ToastrService } from 'ngx-toastr';
-
+declare var $;
 @Component({
   selector: 'app-past-test-result-view',
   templateUrl: './past-test-result-view.component.html',
@@ -12,10 +12,12 @@ import { ToastrService } from 'ngx-toastr';
 export class PastTestResultViewComponent implements OnInit {
   testid;
   roll;
+  loader=false;
   test_type = "Theory";
   question: any;
   constructor(private activeRoute: ActivatedRoute, private location: Location,
-    private faculty: FacultyService, private toastr: ToastrService) { }
+    private faculty: FacultyService, private toastr: ToastrService,private cdr:ChangeDetectorRef
+    ) { }
 
   ngOnInit(): void {
     this.testid = this.activeRoute.snapshot.params['id'];
@@ -42,10 +44,12 @@ export class PastTestResultViewComponent implements OnInit {
     this.faculty.getPastTestCheck(this.testid, this.roll).subscribe((res: any) => {
       if (res) {
         console.log(res);
-        this.question = res;
+        this.question = res.response;
         if (this.question.subjective) {
           this.test_type = 'Theory';
-          res.ansList.map((x) => {
+          res.response.ansList.map((x) => {
+           // x.answer=parseInt(x.answer);
+            //x.correctOption=parseInt(x.correctOption);
             if (x.score == -1) {
               x.score = "";
             }
@@ -54,6 +58,8 @@ export class PastTestResultViewComponent implements OnInit {
         else {
           this.test_type = "MCQ";
         }
+        this.loader=true;  
+        this.cdr.detectChanges();
       }
     }, error => {
       console.log(error);
@@ -91,4 +97,14 @@ export class PastTestResultViewComponent implements OnInit {
     });
 
   }
+
+  check(i,j,k){
+    if(this.question.ansList[i].answer==j-1){
+
+    }
+    else{
+      $('#'+k+j).prop('checked', false);
+    }
+  }
+
 }

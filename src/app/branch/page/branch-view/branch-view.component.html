@@ -1,0 +1,20 @@
+<div class="position-relative">
+    <div class="cross-button ">
+        <i class="fa fa-times" mat-dialog-close  aria-hidden="true"></i>
+    </div>
+
+    <div class="row mx-0 justify-content-center">
+        <div class="col-10">
+            <div class="text-center">
+                <h4 class="mb-2">{{data.branch}} - Subjects</h4>
+               </div>
+          <div class="row mx-0  mb-2" style="border-radius: 4px;">
+            <div class="col-6 my-2 text-center" *ngFor="let i of data.subjects">
+                <span style="display: inline-block;border:1px solid #975AFF;border-radius: 0.45rem;font-size: 1rem;font-weight: 400;padding:10px;width:150px;text-align:center;box-shadow: rgba(0, 0, 0, 0.35) 0px 1.5px 5px;">{{i}}</span>
+                
+            </div>
+          </div>
+        </div>
+        
+    </div>
+</div>

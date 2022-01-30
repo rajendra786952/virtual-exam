@@ -17,7 +17,8 @@ export class PastTestComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
  
-  constructor(private route:Router,private student:StudentService,private cdRef:ChangeDetectorRef,public toastr: ToastrService) { }
+  constructor(private route:Router,private student:StudentService,
+    private cdRef:ChangeDetectorRef,public toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.getStudentPastTest();
@@ -30,21 +31,27 @@ export class PastTestComponent implements OnInit {
   getStudentPastTest(){
     this.student.getStudentPastTest().subscribe((res:any)=>{
       console.log(res);
-     if(res){
-      res.map((x)=>{
-        var r=x.resultOn.split(" ");
-        x.date=r[0];
-        x.time=r[1];
-        if(x.subjective){
-          x.subjective="Theory";
-        }
-        else{
-          x.subjective="MCQ"
-        }
-      })
-       this.dataSource=res;
-       this.cdRef.detectChanges();
-     }
+      if(typeof(res.response)=='string'){
+        this.toastr.success('',res.response, {
+          positionClass: 'toast-bottom-center', closeButton: true, "easeTime":500,timeOut:2000
+        });
+        this.cdRef.detectChanges();
+      }
+      else{
+        res.response.map((x)=>{
+          var r=x.resultOn.split(" ");
+          x.date=r[0];
+          x.time=r[1];
+          if(x.subjective){
+            x.subjective="Theory";
+          }
+          else{
+            x.subjective="MCQ"
+          }
+        })
+         this.dataSource=res.response;
+         this.cdRef.detectChanges();
+      }
     },
     error =>{
       console.log(error);

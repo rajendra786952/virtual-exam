@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,34 +14,12 @@ import { FacultyService } from 'app/shared/services/faculty.service';
 export class PastTestResultComponent implements OnInit {
  displayedColumns: string[] = ['s_no','name','rollNo'];
  displayedColumns1: string[] = ['s_no','name','rollNo','score','Action'];
-  dataSource = new MatTableDataSource<any>([
-    {
-      name:'Rajendra Chourasiya',
-      rollNo:'08181CS181101',
-      score:'-1'
-  },
-  {
-    name:'Anshul Pandey',
-      rollNo:'08181CS181029',
-      score:'-1'
-}
-  ]);
-  dataSource1 = new MatTableDataSource<any>([
-    {
-      name:'Rajendra Chourasiya',
-      rollNo:'08181CS181101',
-      score:'30'
-  },
-  {
-    name:'Anshul Pandey',
-      rollNo:'08181CS181029',
-      score:'-1'
-}
-  ]);
+  dataSource = new MatTableDataSource<any>();
+  dataSource1 = new MatTableDataSource<any>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 constructor(private location:Location,private activeRoute:ActivatedRoute,
-  private faculty:FacultyService,private route:Router) { }
+  private faculty:FacultyService,private route:Router,private cdr:ChangeDetectorRef) { }
 testid;
 
   ngOnInit(): void {
@@ -56,7 +34,7 @@ testid;
       if(res){
         var present=[];
         var absent=[];
-        res.map((x)=>{   
+        res.response.map((x)=>{   
           if(x.isPresent){
             present.push(x);
           }
@@ -66,6 +44,7 @@ testid;
         });
         this.dataSource=new MatTableDataSource(absent);
         this.dataSource1=new MatTableDataSource(present);
+        this.cdr.detectChanges();
       }
     },
     error =>{

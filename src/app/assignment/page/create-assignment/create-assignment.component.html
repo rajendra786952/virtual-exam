@@ -1,0 +1,282 @@
+<div class="row productbox py-3 mt-3">
+    <div class="col-12">
+      <div class="content-header mt-0">
+        <h2><i class="ft-chevron-left pr-2 cursor-pointer" (click)="goback()"></i>New Assignment</h2>
+      </div>
+    </div>
+    <div class="col-12">
+          <form [formGroup]="assignMentForm">
+            <div class="ml-5 mt-2">
+              <ul class="list-unstyled">
+                <li>
+                  <div class="row">
+                    <div class="col-2">
+                      <div class="form-group ">
+                        <h6>Title</h6>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="form-group w-75">
+                        <input type="text" class="form-control" formControlName="title">
+                      </div>
+                      <div class="form-group w-75">
+                        <span class="text-danger"
+                          *ngIf="assignMentForm.controls.title.invalid && (assignMentForm.controls.title.dirty || assignMentForm.controls.title.touched)">Title
+                          is required</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="row">
+                    <div class="col-2">
+                      <div class="form-group">
+                        <h6>Description</h6>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="form-group w-75">
+                        <textarea class="form-control" maxlength="250" formControlName="content"></textarea>
+                      </div>
+                      <div class="form-group w-75">
+                        <span class="text-danger"
+                          *ngIf="assignMentForm.controls.content.invalid && (assignMentForm.controls.content.dirty || assignMentForm.controls.content.touched)">
+                         Description  is required</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                
+                
+                <li>
+                  <div class="row">
+                    <div class="col-2">
+                      <div class="form-group">
+                        <h6>Assign Date</h6>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="form-group w-75">
+                        <input type="text" class="form-control" formControlName="assignTime" [matDatepicker]="picker"
+                          [min]="mindate" (click)="picker.open()">
+                        <mat-datepicker #picker></mat-datepicker>
+                      </div>
+                      <div class="form-group w-75">
+                        <span class="text-danger"
+                          *ngIf="assignMentForm.controls.assignTime.invalid && (assignMentForm.controls.assignTime.dirty || assignMentForm.controls.assignTime.touched)">Assign Date
+                           is required</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="row">
+                    <div class="col-2">
+                      <div class="form-group">
+                        <h6>Assign Time</h6>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="form-group w-75">
+                        <input type="text" class="form-control" formControlName="time1" (click)="setTime()"
+                          (input)="remove()">
+                      </div>
+  
+                      <div class="form-group" *ngIf="showtime">
+                        <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}" (click)="timer($event)"
+                          (mouseleave)="hide()">
+                        </ngb-timepicker>
+                      </div>
+  
+                      <div class="form-group w-75">
+                        <span class="text-danger"
+                          *ngIf="assignMentForm.controls.time1.invalid && (assignMentForm.controls.time1.dirty || assignMentForm.controls.time1.touched)">Assign
+                          Time is required</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="row">
+                    <div class="col-2">
+                      <div class="form-group">
+                        <h6>Due Date</h6>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="form-group w-75">
+                        <input type="text" class="form-control" formControlName="dueTime" [matDatepicker]="picker1"
+                          [min]="mindate" (click)="picker1.open()">
+                        <mat-datepicker #picker1></mat-datepicker>
+                      </div>
+                      <div class="form-group w-75">
+                        <span class="text-danger"
+                          *ngIf="assignMentForm.controls.dueTime.invalid && (assignMentForm.controls.dueTime.dirty || assignMentForm.controls.dueTime.touched)">Due
+                          Date is required</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                <div class="row">
+                  <div class="col-2">
+                    <div class="form-group">
+                      <h6>Due Time</h6>
+                    </div>
+                  </div>
+                  <div class="col-5">
+                    <div class="form-group w-75">
+                      <input type="text" class="form-control" formControlName="time2" (click)="setTime1()"
+                        (input)="remove1()">
+                    </div>
+                    <div class="form-group" *ngIf="showtime1">
+                      <ngb-timepicker [(ngModel)]="time1" [ngModelOptions]="{standalone: true}" (click)="timer1($event)"
+                        (mouseleave)="hide1()">
+                      </ngb-timepicker>
+                    </div>
+                    <div class="form-group w-75">
+                      <span class="text-danger"
+                        *ngIf="assignMentForm.controls.time2.invalid && (assignMentForm.controls.time2.dirty || assignMentForm.controls.time2.touched)">Due
+                        Time is required</span>
+                    </div>
+
+                    <div class="form-group w-75" *ngIf="tvalidation">
+                      <span class="text-danger">Valid Due time time is required</span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+                <li>
+                    <div class="row">
+                      <div class="col-2">
+                        <div class="form-group">
+                          <h6>Attachment (PDF)</h6>
+                        </div>
+                      </div>
+                      <div class="col-5">
+                        <input class="d-none" type="file" accept="application/pdf" #file (change)="onSelectFile($event)">
+                        <div class="form-group w-75 d-inline-block">
+                          <input type="text" class="form-control" [value]="pdffile" disabled>
+                        </div>
+                        <div class="form-group w-25 pl-2 d-inline-block">
+                          <i class="fa fa-upload cp" aria-hidden="true" (click)="file.click()"></i>
+                        </div>
+                        <div class="form-group w-75">
+                          <span class="text-danger"
+                            *ngIf="assignMentForm.controls.attachment.invalid && (assignMentForm.controls.attachment.dirty || assignMentForm.controls.attachment.touched)">Attachment (PDF)
+                            is required</span>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                <li>
+                  <div class="row">
+                    <div class="col-2">
+                      <div class="form-group">
+                        <h6>Semester</h6>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="form-group w-75">
+                        <ng-select [items]="sem" bindLabel="name" bindValue="value" formControlName="sem"
+                          placeholder="Select semester"></ng-select>
+                      </div>
+                      <div class="form-group w-75">
+                        <span class="text-danger"
+                          *ngIf="assignMentForm.controls.sem.invalid && (assignMentForm.controls.sem.dirty || assignMentForm.controls.sem.touched)">Semester
+                          is required</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="row">
+                    <div class="col-2">
+                      <div class="form-group">
+                        <h6>Branch</h6>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="form-group w-75">
+                        <ng-select [items]="branch" bindLabel="branch" bindValue="branch" formControlName="branch"
+                          placeholder="Select branch" (change)="setSubject($event)"></ng-select>
+                      </div>
+                      <div class="form-group w-75">
+                        <span class="text-danger"
+                          *ngIf="assignMentForm.controls.branch.invalid && (assignMentForm.controls.branch.dirty || assignMentForm.controls.branch.touched)">Branch
+                          is required</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li *ngIf="assignMentForm.controls.branch.value!='' && assignMentForm.controls.branch.value!=null && assignMentForm.controls.branch.value!=undefined">
+                  <div class="row">
+                    <div class="col-2">
+                      <div class="form-group">
+                        <h6>Subject Code</h6>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="form-group w-75">
+                        <ng-select [items]="subject" bindLabel="name" bindValue="value" formControlName="subjectCode"
+                        placeholder="Select Subject"></ng-select>
+                       
+                      </div>
+                      <div class="form-group w-75">
+                        <span class="text-danger"
+                          *ngIf="assignMentForm.controls.subjectCode.invalid && (assignMentForm.controls.subjectCode.dirty || assignMentForm.controls.subjectCode.touched)">Subject
+                          code is required</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                
+                <li>
+                  <div class="row">
+                    <div class="col-2">
+                      <div class="form-group">
+                        <h6>Section</h6>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="form-group w-75">
+                        <input type="text" class="form-control" formControlName="section">
+                      </div>
+                      <div class="form-group w-75">
+                        <span class="text-danger"
+                          *ngIf="assignMentForm.controls.section.invalid && (assignMentForm.controls.section.dirty || assignMentForm.controls.section.touched)">Section
+                          is required</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li >
+                    <div class="row">
+                      <div class="col-2">
+                        <div class="form-group">
+                          <h6>Marks</h6>
+                        </div>
+                      </div>
+                      <div class="col-5">
+                        <div class="form-group w-75">
+                          <input type="text" maxlength="2" class="form-control" formControlName="marks"
+                            (input)="digit($event)">
+                        </div>
+                        <div class="form-group"
+                          *ngIf="assignMentForm.controls.marks.invalid && (assignMentForm.controls.marks.dirty || assignMentForm.controls.marks.touched)">
+                          <span class="text-danger">Marks is required</span>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+              </ul>
+            </div>
+            <div class="ml-3 text-center">
+              <button type="button" class="btn btn-outline-primary" (click)="goback()">Cancel</button>
+              <button type="button" class="btn btn-outline-primary ml-3" (click)="submit()">Submit</button>
+              <ngx-spinner></ngx-spinner>
+            </div>
+          </form>
+     </div>
+     </div>     
+        

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit,ViewChild } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StudentService } from 'app/shared/services/student.service';
 import {
@@ -49,25 +49,17 @@ export type ChartOptions1 ={
 })
 export class StaticsticComponent implements OnInit {
   subjective = [{ name: 'MCQ', value: 'mcq' }, { name: 'Theory', value: 'subjective'},{name:'Both',value:'both'}];
-
+  subject=[];
   filter:FormGroup;
   todayDate = new Date();
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
   public chartOptions1: Partial<ChartOptions1>;
   staticbool=false;
-  constructor(private fb:FormBuilder, private studentService:StudentService, private datePipe: DatePipe, public toastr: ToastrService) {
+  constructor(private fb:FormBuilder, private studentService:StudentService,
+     private datePipe: DatePipe, public toastr: ToastrService,private cdr:ChangeDetectorRef) {
     this.chartOptions = {
-      series: [
-        {
-          name: "Average",
-          data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-        },
-        {
-          name: "You",
-          data: [76, 85, 99, 98, 87, 55, 91, 30, 94]
-        },
-      ],
+      series: [],
       chart: {
         type: "bar",
         height: 350
@@ -91,17 +83,7 @@ export class StaticsticComponent implements OnInit {
         title:{
          text:'Test'
         },
-        categories: [
-          "QWERTY",
-          "Final Test",
-          "XYZ Test",
-          "ABC",
-          "QWERTY",
-          "Final Test",
-          "XYZ Test",
-          "ABC",
-          "Practice"
-        ],
+        categories: [],
       },
       yaxis: {
         title: {
@@ -123,16 +105,7 @@ export class StaticsticComponent implements OnInit {
 
 
     this.chartOptions1 = {
-      series: [
-        {
-          name: "Average",
-          data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-        },
-        {
-          name: "You",
-          data: [76, 85, 99, 98, 87, 55, 91, 30, 94]
-        },
-      ],
+      series: [],
       chart: {
         height: 400,
         type: "line",
@@ -160,17 +133,7 @@ export class StaticsticComponent implements OnInit {
           title:{
            text:'Test'
           },
-        categories: [
-          "QWERTY",
-          "Final Test",
-          "XYZ Test",
-          "ABC",
-          "QWERTY",
-          "Final Test",
-          "XYZ Test",
-          "ABC",
-          "Practice"
-        ]
+        categories: []
       }
     };
 
@@ -178,6 +141,7 @@ export class StaticsticComponent implements OnInit {
 
   ngOnInit(): void {
    this.initform();
+   this.getSubject();
   }
   initform(){
    this.filter=this.fb.group({
@@ -187,6 +151,23 @@ export class StaticsticComponent implements OnInit {
     to:['',Validators.required],
    })
   }
+  getSubject(){
+    this.studentService.getSubjectByRollNumber(sessionStorage.getItem('roll')).subscribe((res:any)=>{
+      if(res){
+        //console.log(res);
+        let ar=[{name:'ALL'}];
+        res.response.map((x:any)=>{
+           ar.push({name:x});
+        })
+      this.subject=ar;
+      console.log(this.subject);
+      }
+    },
+    error =>{
+      console.log(error);
+    })
+    
+  }
   submit(){
     console.log(this.filter.value);
    if(this.filter.invalid){
@@ -195,11 +176,13 @@ export class StaticsticComponent implements OnInit {
    let obj=Object.assign({},this.filter.value,{rollNo:sessionStorage.getItem('roll')});
    console.log(obj);
    obj.subject=obj.subject.toUpperCase();
-   obj.from = this.datePipe.transform(obj.from, 'yyyy-dd-MM') + " 00:00:00";
-   obj.to = this.datePipe.transform(obj.to, 'yyyy-dd-MM') + " 23:59:59";
+   obj.from = this.datePipe.transform(obj.from, 'yyyy-MM-dd') + " 00:00:00";
+   obj.to = this.datePipe.transform(obj.to, 'yyyy-MM-dd') + " 23:59:59";
+   console.log(obj.from);
+   console.log(obj.to);
    this.studentService.getStaticsticData(obj).subscribe((res:any)=>{
      if(res){
-      if(res.averagePercent.length==0 || res.userPercent.length==0){
+      if(res.response.averagePercent.length==0 || res.response.userPercent.length==0){
         this.toastr.show('', 'Data not available', {
           positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
         });
@@ -210,28 +193,32 @@ export class StaticsticComponent implements OnInit {
        this.chartOptions.series=[
         {
           name: "Average",
-          data: res.averagePercent
+          data: res.response.averagePercent
         },
         {
           name: "You",
-          data: res.userPercent
+          data: res.response.userPercent
         },
       ];
-      this.chartOptions.xaxis.categories=res.titles;
+      this.chartOptions.xaxis.categories=res.response.titles;
       this.chartOptions1.series=[
         {
           name: "Average",
-          data: res.averagePercent
+          data: res.response.averagePercent
         },
         {
           name: "You",
-          data: res.userPercent
+          data: res.response.userPercent
         },
       ];
-      this.chartOptions1.xaxis.categories=res.titles;
+      this.chartOptions1.xaxis.categories=res.response.titles;
+      this.cdr.detectChanges();
      }
    }, error =>{
      this.staticbool=false
+     this.toastr.error('',error.error.response,{
+      positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
+    });
      console.log(error);
    })
   }

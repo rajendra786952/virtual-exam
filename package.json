@@ -44,7 +44,6 @@
     "angular-archwizard": "6.0.0",
     "angular-calendar": "0.28.5",
     "angular-http-server": "^1.10.0",
-    "angular-instantsearch": "^3.0.0-beta.5",
     "angular-resize-event": "1.2.1",
     "apexcharts": "3.17.0",
     "array-shuffle": "^3.0.0",
@@ -59,8 +58,6 @@
     "date-fns": "2.11.0",
     "gulp": "4.0.2",
     "hopscotch": "0.3.1",
-    "instantsearch.css": "^7.4.5",
-    "instantsearch.js": "^3.7.0",
     "intl": "1.2.5",
     "jquery": "^3.6.0",
     "moment": "2.24.0",
@@ -98,7 +95,9 @@
     "typescript": "3.9.7",
     "web-animations-js": "2.3.2",
     "xlsx": "^0.17.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "ng-open-cv": "^0.3.1",
+    "node-sass": "^5.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.7",
@@ -123,9 +122,7 @@
     "ts-node": "8.6.2",
     "tslint": "~6.1.0",
     "typescript": "3.9.7"
-  },
-  "engines": {
-    "node": "14.14.0",
-    "npm": "6.14.8"
   }
+ 
 }
+

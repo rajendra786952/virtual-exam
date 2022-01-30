@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { FacultyService } from '../../../shared/services/faculty.service';
 import swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-facultylist',
@@ -18,7 +19,8 @@ export class FacultylistComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   // new MatTableDataSource<any>();
-  constructor(private route: Router, private faculty: FacultyService, private cdRef: ChangeDetectorRef) { }
+  constructor(private route: Router, private faculty: FacultyService, 
+    private cdRef: ChangeDetectorRef,private toster:ToastrService) { }
 
   ngOnInit(): void {
     this.getFacultyList();
@@ -34,7 +36,7 @@ export class FacultylistComponent implements OnInit, AfterViewInit {
     this.faculty.getFacultyList().subscribe((res: any) => {
       if (res) {
         console.log(res);
-        this.dataSource = res;
+        this.dataSource = res.response;
         this.cdRef.detectChanges();
       }
     },
@@ -47,6 +49,9 @@ export class FacultylistComponent implements OnInit, AfterViewInit {
    this.faculty.facultystatuschange(req).subscribe((res:any)=>{
     if(res){
       console.log(res);
+      this.toster.success('',res.response,{
+        positionClass: 'toast-bottom-center', closeButton: true, "easeTime": 500
+      });
     }
    },error =>{
      console.log(error);

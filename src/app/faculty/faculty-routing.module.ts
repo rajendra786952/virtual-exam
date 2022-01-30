@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { FacultySearchComponent } from '../faculty-test/page/faculty-search/faculty-search.component';
 import { FacultyaddComponent } from './page/facultyadd/facultyadd.component';
 import { FacultylistComponent } from './page/facultylist/facultylist.component';
 
@@ -26,6 +25,7 @@ const routes: Routes = [
        title: 'new'
      }
    },
+   
   ]}
 ];
 

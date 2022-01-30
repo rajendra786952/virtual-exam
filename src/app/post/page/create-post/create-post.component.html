@@ -1,0 +1,159 @@
+<div class="row productbox py-3 mt-3">
+    <div class="col-12">
+      <div class="content-header mt-0">
+        <h2><i class="ft-chevron-left pr-2 cursor-pointer" (click)="goback()"></i>New Assignment</h2>
+      </div>
+    </div>
+    <div class="col-12">
+          <form [formGroup]="postForm">
+            <div class="ml-5 mt-2">
+              <ul class="list-unstyled">
+                <li>
+                  <div class="row">
+                    <div class="col-2">
+                      <div class="form-group ">
+                        <h6>Title</h6>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="form-group w-75">
+                        <input type="text" class="form-control" formControlName="title">
+                      </div>
+                      <div class="form-group w-75">
+                        <span class="text-danger"
+                          *ngIf="postForm.controls.title.invalid && (postForm.controls.title.dirty || postForm.controls.title.touched)">Title
+                          is required</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="row">
+                    <div class="col-2">
+                      <div class="form-group">
+                        <h6>Description</h6>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="form-group w-75">
+                        <textarea class="form-control" maxlength="250" formControlName="content"></textarea>
+                      </div>
+                      <div class="form-group w-75">
+                        <span class="text-danger"
+                          *ngIf="postForm.controls.content.invalid && (postForm.controls.content.dirty || postForm.controls.content.touched)">
+                         Description  is required</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                    <div class="row">
+                      <div class="col-2">
+                        <div class="form-group">
+                          <h6>Attachment (PDF)</h6>
+                        </div>
+                      </div>
+                      <div class="col-5">
+                        <input class="d-none" type="file" accept="application/pdf" #file (change)="onSelectFile($event)">
+                        <div class="form-group w-75 d-inline-block">
+                          <input type="text" class="form-control" [value]="pdffile" disabled>
+                        </div>
+                        <div class="form-group w-25 pl-2 d-inline-block">
+                          <i class="fa fa-upload cp" aria-hidden="true" (click)="file.click()"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                <li>
+                  <div class="row">
+                    <div class="col-2">
+                      <div class="form-group">
+                        <h6>Semester</h6>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="form-group w-75">
+                        <ng-select [items]="sem" bindLabel="name" bindValue="value" formControlName="sem"
+                          placeholder="Select semester"></ng-select>
+                      </div>
+                      <div class="form-group w-75">
+                        <span class="text-danger"
+                          *ngIf="postForm.controls.sem.invalid && (postForm.controls.sem.dirty || postForm.controls.sem.touched)">Semester
+                          is required</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="row">
+                    <div class="col-2">
+                      <div class="form-group">
+                        <h6>Branch</h6>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="form-group w-75">
+                        <ng-select [items]="branch" bindLabel="branch" bindValue="branch" formControlName="branch"
+                          placeholder="Select branch" (change)="setSubject($event)"></ng-select>
+                      </div>
+                      <div class="form-group w-75">
+                        <span class="text-danger"
+                          *ngIf="postForm.controls.branch.invalid && (postForm.controls.branch.dirty || postForm.controls.branch.touched)">Branch
+                          is required</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li *ngIf="postForm.controls.branch.value!='' && postForm.controls.branch.value!=null && postForm.controls.branch.value!=undefined">
+                  <div class="row">
+                    <div class="col-2">
+                      <div class="form-group">
+                        <h6>Subject Code</h6>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="form-group w-75">
+                        <ng-select [items]="subject" bindLabel="name" bindValue="value" formControlName="subjectCode"
+                        placeholder="Select Subject"></ng-select>
+                       
+                      </div>
+                      <div class="form-group w-75">
+                        <span class="text-danger"
+                          *ngIf="postForm.controls.subjectCode.invalid && (postForm.controls.subjectCode.dirty || postForm.controls.subjectCode.touched)">Subject
+                          code is required</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                
+                <li>
+                  <div class="row">
+                    <div class="col-2">
+                      <div class="form-group">
+                        <h6>Section</h6>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="form-group w-75">
+                        <input type="text" class="form-control" formControlName="section">
+                      </div>
+                      <div class="form-group w-75">
+                        <span class="text-danger"
+                          *ngIf="postForm.controls.section.invalid && (postForm.controls.section.dirty || postForm.controls.section.touched)">Section
+                          is required</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+               
+              </ul>
+            </div>
+            <div class="ml-3 text-center">
+              <button type="button" class="btn btn-outline-primary" (click)="goback()">Cancel</button>
+              <button type="button" class="btn btn-outline-primary ml-3" (click)="submit()">Submit</button>
+              <ngx-spinner></ngx-spinner>
+            </div>
+          </form>
+     </div>
+     </div>     
+        
